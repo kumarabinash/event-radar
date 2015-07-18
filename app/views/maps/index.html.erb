@@ -1,5 +1,8 @@
 <%= content_for :head do %>
 	<%= javascript_include_tag "modal" %>
+	<script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKWdxhqR0y7mTGGbUCtOxmMKAXzFpJrIg&libraries=places">
+    </script>
 <% end %>
 
 
@@ -61,9 +64,28 @@ addEventButton.addEventListener("click", function(e){
 
 	openModal(myModal);
 
+	var input_address = document.getElementById('form_address');
+	var options = {componentRestrictions: {country: 'in'}};
+
+	new google.maps.places.Autocomplete(input_address, options);
+    
+	// var autocomplete = new 
+	// var autocomplete = new google.maps.places.Autocomplete(input_address, 'place_changed', function(){
+	// 	var place = autocomplete.getPlace();
+	// 	console.log("beore");
+	// 	console.log(place.geometry.location);
+	// });
+	// console.log(autocomplete);
+	// var place = autocomplete.getPlace();
+       
+ //        console.log(place.geometry.location);
+
+
+
 	var submitEventData = document.getElementById('submitEventData');
 	submitEventData.addEventListener("click", function(e){
 		e.preventDefault();
+
 
 		var event_type = document.getElementById('form_event_type').value,
 			title = document.getElementById('form_title').value,
@@ -72,28 +94,46 @@ addEventButton.addEventListener("click", function(e){
 			starts_datetime = document.getElementById('form_starts').value,
 			expires_datetime = document.getElementById('form_ends').value;
 
-			$.ajax({
-				url: "<%= events_path %>",
-				type: 'post',
-				data: {
-					event: {
-						title: title,
-						description: description,
-						address: address,
-						starts_datetime: starts_datetime,
-						expires_datetime: expires_datetime
-					}
-				},
-				dataType: 'JSON',
-				success: function(data){
-					console.log(data);
-					myModal.close();
-				},
-				error: function(data){
-					console.log(data);
-				}
-			});
+		// Geocoding the address
+	 	geocoder = new google.maps.Geocoder();
+		geocoder.geocode({'address':address}, function(result, status){
+			if(status == google.maps.GeocoderStatus.OK){
+				var location = result[0].geometry.location;
+				var lat = String(location.lat());
+				var lng = String(location.lng());
+				var dotlat = lat.indexOf(".");
+				var dotlng = lng.indexOf(".");
+				lat = parseFloat(lat.substring(0, dotlat+7));
+				lng = parseFloat(lng.substring(0, dotlng+7));
 
+
+
+				$.ajax({
+					url: "<%= events_path %>",
+					type: 'post',
+					data: {
+						event: {
+							event_type: event_type,
+							title: title,
+							description: description,
+							address: address,
+							starts_datetime: starts_datetime,
+							expires_datetime: expires_datetime,
+							lat: lat,
+							lng: lng
+						}
+					},
+					dataType: 'JSON',
+					success: function(data){
+						console.log(data);
+						myModal.close();
+					},
+					error: function(data){
+						console.log(data);
+					}
+				});	
+			}
+		});
 	});
 });
 
@@ -104,10 +144,6 @@ addEventButton.addEventListener("click", function(e){
 
 
 <%= content_for :footer_script_includes do %>
-
-	<script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKWdxhqR0y7mTGGbUCtOxmMKAXzFpJrIg">
-    </script>
 	<%= javascript_include_tag "map/map-marker-list" %>
 	<%= javascript_include_tag "map/mapper" %>
 	<%= javascript_include_tag "map/map-options" %>
