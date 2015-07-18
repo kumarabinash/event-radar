@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyText
+  event_type: MyString
+  address: MyText
+  lat: 9.99
+  lng: 9.99
+  expiry_datetime: 2015-07-18 17:01:56
+
+two:
+  title: MyString
+  description: MyText
+  event_type: MyString
+  address: MyText
+  lat: 9.99
+  lng: 9.99
+  expiry_datetime: 2015-07-18 17:01:56
