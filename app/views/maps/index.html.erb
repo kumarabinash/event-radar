@@ -1,0 +1,20 @@
+<%= content_for :head do %>
+	<script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKWdxhqR0y7mTGGbUCtOxmMKAXzFpJrIg">
+    </script>
+<% end %>
+
+
+
+
+
+<div id="map-canvas"></div>
+
+
+
+<%= content_for :footer_script_includes do %>
+	<%= javascript_include_tag "map/map-list" %>
+	<%= javascript_include_tag "map/mapper" %>
+	<%= javascript_include_tag "map/map-options" %>
+	<%= javascript_include_tag "map/map-load" %>
+<% end %>
