@@ -147,6 +147,36 @@ addEventButton.addEventListener("click", function(e){
 	});
 });
 
+
+
+var fetch = function(event_type){
+	$.ajax({
+		url: "<%= maps_path %>",
+		type: 'post',
+		data: {
+			fetch: event_type
+		},
+		dataType: 'JSON',
+		success: function(data){
+			var i=0;
+			for(; i<data.length; i++){
+				window.map.addMarker({
+					lat: parseFloat(data[i].lat),
+					lng: parseFloat(data[i].lng),
+					marker_type: data[i].event_type,
+					icon: "images/markers/" + data[i].event_type + ".png",
+					draggable: true,
+					content: "<div class='title'>" + data[i].title + "</div><div class='body'>" + data[i].description  + "</div>"
+				});
+			}
+		},
+		error: function(data){
+			console.log(data);
+		}
+	});
+};
+
+fetch("all");
 </script>
 
 
