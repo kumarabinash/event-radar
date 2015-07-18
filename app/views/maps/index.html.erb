@@ -30,7 +30,7 @@ var myModal = new Modal({
 			<label class='mdl-textfield__label'>Title</label>\
 		</div><br />\
 		<div class='mdl-textfield mdl-js-textfield textfield-demo'>\
-			<textarea class='mdl-textfield__input' type='text' rows= '3' id='form_body' ></textarea>\
+			<textarea class='mdl-textfield__input' type='text' rows= '3' id='form_description' ></textarea>\
 			<label class='mdl-textfield__label'>Content for you event!</label>\
 		</div>\
 		<div class='mdl-textfield mdl-js-textfield textfield-demo'>\
@@ -46,7 +46,7 @@ var myModal = new Modal({
 			<label class='mdl-textfield__label'>End Time &amp; Date</label>\
 		</div>\
 	</form>\
-	<button id='submitMarkerData' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>\
+	<button id='submitEventData' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>\
 		Add Event</button></div>"
 });
 
@@ -60,6 +60,41 @@ addEventButton.addEventListener("click", function(e){
 	e.preventDefault();
 
 	openModal(myModal);
+
+	var submitEventData = document.getElementById('submitEventData');
+	submitEventData.addEventListener("click", function(e){
+		e.preventDefault();
+
+		var event_type = document.getElementById('form_event_type').value,
+			title = document.getElementById('form_title').value,
+			description = document.getElementById('form_description').value,
+			address = document.getElementById('form_address').value,
+			starts_datetime = document.getElementById('form_starts').value,
+			expires_datetime = document.getElementById('form_ends').value;
+
+			$.ajax({
+				url: "<%= events_path %>",
+				type: 'post',
+				data: {
+					event: {
+						title: title,
+						description: description,
+						address: address,
+						starts_datetime: starts_datetime,
+						expires_datetime: expires_datetime
+					}
+				},
+				dataType: 'JSON',
+				success: function(data){
+					console.log(data);
+					myModal.close();
+				},
+				error: function(data){
+					console.log(data);
+				}
+			});
+
+	});
 });
 
 </script>
