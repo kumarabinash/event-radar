@@ -97,4 +97,4 @@
 
 	window.Mapper = Mapper;
 
-}(window, google, List));
+}(window, window.google, List));

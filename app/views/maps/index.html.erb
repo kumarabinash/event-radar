@@ -1,19 +1,49 @@
 <%= content_for :head do %>
-	<script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKWdxhqR0y7mTGGbUCtOxmMKAXzFpJrIg">
-    </script>
+	<%= javascript_include_tag "modal" %>
 <% end %>
 
 
+<div class="addEventButton">
+	<button id="triggerModal" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+	  <i class="material-icons">add</i>
+	  <div class="mdl-tooltip" for="triggerModal">Add Your Marker</div>
+	</button>
+</div>
 
 
 
-<div id="map-canvas"></div>
 
+<div id="map-canvas">
+	
+</div>
+
+<script type="text/javascript">
+
+var myModal = new Modal({
+  content: "Hi there!"
+});
+
+
+var openModal = function(modal){
+	modal.open();
+};
+
+var addEventButton = document.getElementById('triggerModal');
+addEventButton.addEventListener("click", function(e){
+	e.preventDefault();
+
+	openModal(myModal);
+});
+
+</script>
 
 
 <%= content_for :footer_script_includes do %>
-	<%= javascript_include_tag "map/map-list" %>
+
+	<script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKWdxhqR0y7mTGGbUCtOxmMKAXzFpJrIg">
+    </script>
+	<%= javascript_include_tag "map/map-marker-list" %>
 	<%= javascript_include_tag "map/mapper" %>
 	<%= javascript_include_tag "map/map-options" %>
 	<%= javascript_include_tag "map/map-load" %>

@@ -1,7 +1,7 @@
 // SCRIPT TO LOAD MAP INTO THE PAGE
 (function(window, mapper){
 	// MAP OPTIONS
-	var options = Mapper.MAP_OPTIONS,
+	var options = mapper.MAP_OPTIONS,
 	
 	element = document.getElementById('map-canvas'),
 	map = mapper.create(element, options);
