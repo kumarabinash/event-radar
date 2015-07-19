@@ -7,6 +7,11 @@ html, body, #map-canvas {
   	height: calc(100% - 62px);
 }
 
+.mdl-grid{
+	padding:0;
+	margin: 0;
+	/*background: #efefef;*/
+}
 
 .addEventButton{
 	z-index: 10;
@@ -16,5 +21,49 @@ html, body, #map-canvas {
 }
 
 .sidebar{
-	background: pink;
+	background: #efefef;
+	margin: 0;
+}
+
+ul#event-comments{
+	margin:0;padding:0;
+}
+
+ul#event-comments li {
+	list-style: none;
+	padding-left:0;
+	margin-left:0;
+	padding: 10px;
+	border-bottom: 1px solid green;
+}
+
+ul#event-comments li .comment{
+	padding: 5px;
+	/*background: white;*/
+}
+
+ul#event-comments li span {
+	font-size: 11px;
+	color: #888;
+}
+
+#event-details{
+	/*background: red;*/
+	padding:10px;
+	font-weight: bold;
+}
+
+#event-details .eventDetails{
+	font-weight: bold;
+}
+
+#event-details h4{
+	font-weight: bold;
+}
+
+.img-circle{
+	border-radius: 99px;
+	margin-top: 5px;
+	border:3px solid white;
+	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
 }

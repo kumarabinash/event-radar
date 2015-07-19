@@ -33,7 +33,7 @@
 	</div>
 
 
-	<div class="mdl-cell mdl-cell--8--col">
+	<div class="mdl-cell mdl-cell--8-col">
 		
 		<div id="map-canvas" class="mdl-cell mdl-cell--12-col"></div>
 	</div>
@@ -240,20 +240,39 @@ var loadEventComments = function(event_id){
 			if(data.length > 0){
 				for(; i<data.length; i++){
 					var li = document.createElement('li')
+
+					li.className = "mdl-grid";
 					
+					var lidiv = document.createElement('div');
+					lidiv.className ="mdl-cell mdl-cell--1-col";
+
+					var lidiv2 = document.createElement('div');
+					lidiv2.className = "mdl-cell mdl-cell--11-col";
+
+					var img = document.createElement("img");
+					img.src = 'images/default.jpg';
+					img.setAttribute("height", "30");
+					img.setAttribute("width", "30");
+					img.className = "img-circle";
+
+					lidiv.appendChild(img);
+
 					var commentText = document.createTextNode(data[i].comment),
-						user_id_text = document.createTextNode(data[i].user_id),
+						user_id_text = document.createTextNode("- Anonymous"),
 						comment = document.createElement('div'),
 						user_id_span = document.createElement('span');
 
+						comment.className = "comment";
 					comment.appendChild(commentText);
 					user_id_span.appendChild(user_id_text);
 
-					li.appendChild(comment);
-					li.appendChild(user_id_span);
+					lidiv2.appendChild(comment);
+					lidiv2.appendChild(user_id_span);
+
+					li.appendChild(lidiv);
+					li.appendChild(lidiv2);
 
 					eventComments.appendChild(li);
-					console.log("till here 1");
 
 					textField = document.createElement('textarea');
 					textField.id = "new-event-comment";
@@ -267,6 +286,7 @@ var loadEventComments = function(event_id){
 					addCommentButton = document.createElement('button');
 					addCommentButton.innerHTML = "Add Comment";
 					addCommentButton.id = "add-new-comment-button";
+					addCommentButton.className = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent";
 
 					var eventCommentForm = document.getElementById("event-comment-form");
 					eventCommentForm.innerHTML = "";
@@ -419,6 +439,7 @@ var loadEventDetails = function(marker){
 
 			var h4 = document.createElement("h4"),
 				desc = document.createElement("div");
+				desc.className = "eventDetails";
 				h4.appendChild(title);
 				desc.appendChild(description);
 
