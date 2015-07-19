@@ -68,17 +68,18 @@ var myModal = new Modal({
 			<label class='mdl-textfield__label'>Address for your event</label>\
 		</div>\
 		<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>\
-			<input class='mdl-textfield__input' type='text' id='form_starts'/>\
+			<input class='mdl-textfield__input datetimepicker' type='text' id='form_starts'/>\
 			<label class='mdl-textfield__label'>Start Time &amp; Date</label>\
 		</div>\
 		<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo'>\
-			<input class='mdl-textfield__input' type='text' id='form_ends'/>\
+			<input class='mdl-textfield__input datetimepicker' type='text' id='form_ends'/>\
 			<label class='mdl-textfield__label'>End Time &amp; Date</label>\
 		</div>\
 	</form>\
 	<button id='submitEventData' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>\
 		Add Event</button></div>"
 });
+
 
 
 var openModal = function(modal){
@@ -90,6 +91,9 @@ addEventButton.addEventListener("click", function(e){
 	e.preventDefault();
 
 	openModal(myModal);
+	$('.datetimepicker').datetimepicker({
+		sideBySide: true
+	});
 
 	var input_address = document.getElementById('form_address');
 	var options = {componentRestrictions: {country: 'in'}};
@@ -121,6 +125,14 @@ addEventButton.addEventListener("click", function(e){
 			starts_datetime = document.getElementById('form_starts').value,
 			expires_datetime = document.getElementById('form_ends').value;
 
+			// var date = "03/05/2013";
+			// var newdate = date.split("/").reverse().join("-");
+			starts_datetime_array = starts_datetime.split(" ");
+			starts_datetime = starts_datetime_array[0].split("/").reverse().join("-") + " " + starts_datetime_array[1] + ":00 +0530";
+
+			expires_datetime_array = expires_datetime.split(" ");
+			expires_datetime = expires_datetime_array[0].split("/").reverse().join("-") + " " + expires_datetime_array[1] + ":00 +0530";
+// 2015-07-19 09:22:47 +0530
 		// Geocoding the address
 	 	geocoder = new google.maps.Geocoder();
 		geocoder.geocode({'address':address}, function(result, status){
@@ -144,11 +156,12 @@ addEventButton.addEventListener("click", function(e){
 							title: title,
 							description: description,
 							address: address,
-							starts_datetime: starts_datetime,
-							expires_datetime: expires_datetime,
 							lat: lat,
-							lng: lng
+							lng: lng,
+							starts_datetime: starts_datetime,
+							expires_datetime: expires_datetime
 						}
+						
 					},
 					dataType: 'JSON',
 					success: function(data){
