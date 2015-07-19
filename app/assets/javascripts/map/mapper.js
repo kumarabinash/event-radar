@@ -1,6 +1,7 @@
 // Mapper Library
 (function(window, google, List){
 // This is like a class in OOP
+	var infoWindow;
 	var Mapper = (function(){
 	// And this is like the init function
 		function Mapper(element, opts){
@@ -58,11 +59,19 @@
 						obj: marker,
 						event: 'click',
 						callback: function(){
-							var infoWindow = new google.maps.InfoWindow({
+							if(infoWindow){
+								infoWindow.close();
+							}
+							infoWindow = new google.maps.InfoWindow({
 								content: opts.content
 							});
-
+							loadEventDetails(marker);
 							infoWindow.open(this.gMap, marker);
+							google.maps.event.addListener(this.gMap, "click", function(){
+								if(infoWindow){
+									infoWindow.close();
+								}
+							});
 						}
 					})
 				}

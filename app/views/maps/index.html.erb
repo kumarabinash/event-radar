@@ -6,6 +6,9 @@
 <% end %>
 
 
+
+
+
 <div class="addEventButton">
 	<button id="triggerModal" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
 	  <i class="material-icons">add</i>
@@ -15,10 +18,27 @@
 
 
 
+<div class="mdl-grid">
+	<div class="mdl-cell mdl-cell--4-col sidebar">
+		<div id="event-details">
+			<h4>Click on a Event on map to see details</h4>
+		</div>
+	</div>
 
-<div id="map-canvas">
-	
+
+	<div class="mdl-cell mdl-cell--8--col">
+		
+		<div id="map-canvas" class="mdl-cell mdl-cell--12-col"></div>
+	</div>
 </div>
+
+
+
+
+
+
+
+
 
 <script type="text/javascript">
 
@@ -132,6 +152,7 @@ addEventButton.addEventListener("click", function(e){
 						window.map.addMarker({
 							lat: parseFloat(data.lat),
 							lng: parseFloat(data.lng),
+							event_id: data[i].id,
 							marker_type: data.event_type,
 							icon: "images/markers/" + data.event_type + ".png",
 							draggable: true,
@@ -163,6 +184,7 @@ var fetch = function(event_type){
 				window.map.addMarker({
 					lat: parseFloat(data[i].lat),
 					lng: parseFloat(data[i].lng),
+					event_id: data[i].id,
 					marker_type: data[i].event_type,
 					icon: "images/markers/" + data[i].event_type + ".png",
 					draggable: true,
@@ -177,6 +199,40 @@ var fetch = function(event_type){
 };
 
 fetch("all");
+
+
+
+var loadEventDetails = function(marker){
+	// console.log(marker.event_id); 
+	event_id = marker.event_id;
+
+	$.ajax({
+		url: "<%= maps_loadDetails_path %>",
+		type: 'post',
+		data: {
+			event_id: event_id
+		},
+		dataType: 'JSON',
+		success: function(data){
+			var eventDetails = document.getElementById("event-details");
+			eventDetails.innerHTML = "";
+
+			var title = document.createTextNode(data.title),
+				description = document.createTextNode(data.description);
+
+			var h4 = document.createElement("h4"),
+				desc = document.createElement("div");
+				h4.appendChild(title);
+				desc.appendChild(description);
+
+				eventDetails.appendChild(h4);
+				eventDetails.appendChild(desc);
+
+		}, error: function(data){
+			console.log(data);
+		}
+	})
+};
 </script>
 
 

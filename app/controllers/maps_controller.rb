@@ -10,4 +10,12 @@ class MapsController < ApplicationController
 			format.json { render json: @events }
 		end
 	end
+
+	def loadDetails
+		@event = Event.find(params[:event_id]);
+
+		respond_to do |format|
+			format.json {render json: @event }
+		end
+	end
 end
