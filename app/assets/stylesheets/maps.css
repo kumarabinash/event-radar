@@ -1,10 +1,11 @@
-html, body, #map-canvas { 
+html, body{
 	height: 100%; margin: 0; padding: 0;
 }
 
 #map-canvas{
   	position: absolute;
-  	height: calc(100% - 62px);
+  	height: calc(100% - 57px);
+  	margin-top: -40px;
 }
 
 .mdl-grid{
@@ -23,10 +24,12 @@ html, body, #map-canvas {
 .sidebar{
 	background: #efefef;
 	margin: 0;
+	padding:10px;
 }
 
 ul#event-comments{
 	margin:0;padding:0;
+	overflow-y: scroll;
 }
 
 ul#event-comments li {
