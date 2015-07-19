@@ -32,6 +32,14 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'devise'
+gem 'omniauth-facebook'
+gem 'fb_graph'
+
+
+gem 'momentjs-rails', '~> 2.9',  :github => 'derekprior/momentjs-rails'
+gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -45,7 +53,6 @@ group :development, :test do
 
 
 
-  gem 'momentjs-rails', '~> 2.9',  :github => 'derekprior/momentjs-rails'
-  gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
+  
 end
 

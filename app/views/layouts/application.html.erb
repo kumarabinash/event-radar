@@ -21,6 +21,13 @@
       <!-- Navigation -->
       <nav class="mdl-navigation">
         <a class="mdl-navigation__link" href="">Link</a>
+        <% if user_signed_in? %>
+          <%= link_to current_user.email, "http://google.com/", class: "mdl-navigation__link" %>
+          <%= link_to "Sign Out", destroy_user_session_path, :method => 'delete' %>
+        <% else %>
+          <%= link_to "Sign Up", new_user_session_path, class: "mdl-navigation__link" %>
+          <%= link_to "Login with facebook", user_omniauth_authorize_path(:facebook), class: "mdl-navigation__link" %>
+        <% end %>
       </nav>
     </div>
   </header>
