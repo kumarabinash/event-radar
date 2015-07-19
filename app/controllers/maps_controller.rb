@@ -18,4 +18,15 @@ class MapsController < ApplicationController
 			format.json {render json: @event }
 		end
 	end
+
+
+	def loadComments
+		@event = Event.find(params[:event_id])
+
+		@comments = @event.comments.all
+
+		respond_to do |format|
+			format.json {render json: @comments }
+		end
+	end
 end

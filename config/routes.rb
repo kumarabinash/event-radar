@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :comments
   resources :events
 
   root 'maps#index'
@@ -7,6 +8,7 @@ Rails.application.routes.draw do
   post 'maps' => 'maps#fetch'
 
   post 'maps/loadDetails' => 'maps#loadDetails'
+  post 'maps/loadComments' => 'maps#loadComments'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

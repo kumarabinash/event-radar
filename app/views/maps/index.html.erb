@@ -23,6 +23,13 @@
 		<div id="event-details">
 			<h4>Click on a Event on map to see details</h4>
 		</div>
+
+		<div>
+			<ul id="event-comments"></ul>
+			<div id="event-comment-form">
+				
+			</div>
+		</div>
 	</div>
 
 
@@ -152,7 +159,7 @@ addEventButton.addEventListener("click", function(e){
 						window.map.addMarker({
 							lat: parseFloat(data.lat),
 							lng: parseFloat(data.lng),
-							event_id: data[i].id,
+							event_id: data.id,
 							marker_type: data.event_type,
 							icon: "images/markers/" + data.event_type + ".png",
 							draggable: true,
@@ -201,10 +208,187 @@ var fetch = function(event_type){
 fetch("all");
 
 
+var loadEventComments = function(event_id){
+	// console.log(marker.event_id); 
+	var event_id = event_id;
+	$.ajax({
+		url: "<%= maps_loadComments_path %>",
+		type: 'post',
+		data: {
+			event_id: event_id
+		},
+		dataType: 'JSON',
+		success: function(data){
+			var eventComments = document.getElementById("event-comments");
+			eventComments.innerHTML = "";
+
+			console.log(data);
+			var i = 0;
+			if(data.length > 0){
+				for(; i<data.length; i++){
+					var li = document.createElement('li')
+					
+					var commentText = document.createTextNode(data[i].comment),
+						user_id_text = document.createTextNode(data[i].user_id),
+						comment = document.createElement('div'),
+						user_id_span = document.createElement('span');
+
+					comment.appendChild(commentText);
+					user_id_span.appendChild(user_id_text);
+
+					li.appendChild(comment);
+					li.appendChild(user_id_span);
+
+					eventComments.appendChild(li);
+					console.log("till here 1");
+
+					textField = document.createElement('textarea');
+					textField.id = "new-event-comment";
+
+					event_id_field = document.createElement('input');
+					event_id_field.setAttribute("type", "hidden");
+
+					event_id_field.setAttribute("value", event_id);
+					event_id_field.id = "new-comment-event-id";
+
+					addCommentButton = document.createElement('button');
+					addCommentButton.innerHTML = "Add Comment";
+					addCommentButton.id = "add-new-comment-button";
+
+					var eventCommentForm = document.getElementById("event-comment-form");
+					eventCommentForm.innerHTML = "";
+
+					eventCommentForm.appendChild(textField);
+					eventCommentForm.appendChild(addCommentButton);
+					eventCommentForm.appendChild(event_id_field);
+
+					var addNewCommentButton = document.getElementById("add-new-comment-button");
+					console.log(addNewCommentButton);
+					addNewCommentButton.addEventListener("click", function(e){
+						e.preventDefault();
+
+						var comment = document.getElementById("new-event-comment").value,
+							user_id = 2;
+
+						$.ajax({
+							url: "<%= comments_path %>",
+							type: 'post',
+							data: {
+								comment: {
+									comment: comment,
+									event_id: event_id,
+									user_id: user_id
+								}
+							},
+							dataType: 'JSON',
+							success: function(data){
+								loadEventComments(event_id);
+							},
+							error: function(data){
+								console.log(data);
+							}
+						});
+
+					});
+				}
+			} else {
+				textField = document.createElement('textarea');
+				textField.id = "new-event-comment";
+
+				event_id_field = document.createElement('input');
+				event_id_field.setAttribute("type", "hidden");
+
+				event_id_field.setAttribute("value", event_id);
+				event_id_field.id = "new-comment-event-id";
+
+				addCommentButton = document.createElement('button');
+				addCommentButton.innerHTML = "Add Comment";
+				addCommentButton.id = "add-new-comment-button";
+
+				var eventCommentForm = document.getElementById("event-comment-form");
+				eventCommentForm.innerHTML = "";
+
+				eventCommentForm.appendChild(textField);
+				eventCommentForm.appendChild(addCommentButton);
+				eventCommentForm.appendChild(event_id_field);
+
+				var addNewCommentButton = document.getElementById("add-new-comment-button");
+				console.log(addNewCommentButton);
+				addNewCommentButton.addEventListener("click", function(e){
+					e.preventDefault();
+
+					var comment = document.getElementById("new-event-comment").value,
+						user_id = 2;
+
+					$.ajax({
+						url: "<%= comments_path %>",
+						type: 'post',
+						data: {
+							comment: {
+								comment: comment,
+								event_id: event_id,
+								user_id: user_id
+							}
+						},
+						dataType: 'JSON',
+						success: function(data){
+							loadEventComments(event_id);
+						},
+						error: function(data){
+							console.log(data);
+						}
+					});
+
+				});
+			}
+
+				// loadEventComments(data.id);
+		}, error: function(data){
+			console.log(data);
+		}
+	});
+
+	
+
+	// return true;
+};
+
+
+function saveComment(event_id){
+		console.log("inside it");
+
+		var addNewCommentButton = document.getElementById("add-new-comment-button");
+		console.log(addNewCommentButton);
+		addNewCommentButton.addEventListener("click", function(e){
+			e.preventDefault();
+
+			var comment = document.getElementById("new-event-comment").value,
+				user_id = 2;
+
+			$.ajax({
+				url: "<%= comments_path %>",
+				type: 'post',
+				data: {
+					comment: comment,
+					event_id: event_id,
+					user_id: user_id
+				},
+				dataType: 'JSON',
+				success: function(data){
+					console.log(data);
+				},
+				error: function(data){
+					console.log(data);
+				}
+			});
+
+		});
+	}
+
 
 var loadEventDetails = function(marker){
 	// console.log(marker.event_id); 
-	event_id = marker.event_id;
+	var event_id = marker.event_id;
 
 	$.ajax({
 		url: "<%= maps_loadDetails_path %>",
@@ -231,8 +415,43 @@ var loadEventDetails = function(marker){
 		}, error: function(data){
 			console.log(data);
 		}
-	})
+	});
+
+	loadEventComments(event_id);
+	// loadEventComments(function(){ loadEventComments(event_id);});
+
+	// var addNewCommentButton = document.getElementById("add-new-comment-button");
+
+	// addNewCommentButton.addEventListener("click", function(e){
+	// 	e.preventDefault();
+
+	// 	var comment = document.getElementById("new-event-comment").value,
+	// 		user_id = 2;
+
+	// 	$.ajax({
+	// 		url: "<%= comments_path %>",
+	// 		type: 'post',
+	// 		data: {
+	// 			comment: comment,
+	// 			event_id: event_id,
+	// 			user_id: user_id
+	// 		},
+	// 		dataType: 'JSON',
+	// 		success: function(data){
+	// 			console.log(data);
+	// 		},
+	// 		error: function(data){
+	// 			console.log(data);
+	// 		}
+	// 	});
+
+	// });
+	
+
+
 };
+
+
 </script>
 
 
